@@ -12,6 +12,6 @@ public class Node {
     public Node(int data){
         this.data = data;
         left = right = parent = null;
-        color = Color.  BLACK;
+        color = Color.BLACK;
     }
 }
