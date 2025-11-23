@@ -50,7 +50,7 @@ O contador é exibido em verde no nó correspondente.
 Certifique-se de ter o Java instalado (JDK 8 ou superior).
 
 1. Clonar o Repositório ou Baixar o Arquivo .ZIP
-git clone https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git
+git clone https://github.com/ffelipef/projetoGrafos1.git
 cd SEU-REPOSITORIO
 
 2. Acessar a Pasta do Código
