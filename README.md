@@ -1,4 +1,4 @@
-Catálogo de Itens de RPG – Estruturas de Dados II
+Catálogo de Itens de RPG – Teoria de Grafos
 
 Projeto desenvolvido como requisito para a disciplina de Estrutura de Dados II, com foco na implementação, visualização e comparação de árvores binárias de busca balanceadas, aplicadas a um cenário temático de inventário de RPG.
 
