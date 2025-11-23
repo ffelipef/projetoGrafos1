@@ -1,21 +1,37 @@
-public class App {
-    public static void main(String[] args) throws Exception {
+import javax.swing.JFrame;
+public class App {    
+    public static void main(String[] args) {
+        // 1. Criar a árvore e inserir dados (O "Backend")
         ArvoreRN arvore = new ArvoreRN();
 
-        // Inserindo itens normais
-        arvore.insert(new ItemRPG(50, "Espada Longa", "Comum"));
-        arvore.insert(new ItemRPG(20, "Escudo Quebrado", "Lixo"));
-        arvore.insert(new ItemRPG(70, "Cajado Arcano", "Raro"));
-        arvore.insert(new ItemRPG(10, "Livro de Magia", "Épico"));
+        System.out.println("Gerando Catálogo de Itens RPG...");
         
-        // Testando inserção de item repetido (ID 50)
-        System.out.println("--- Tentando inserir item repetido ---");
-        arvore.insert(new ItemRPG(50, "Espada Longa (Outra)", "Comum"));
+        // Inserindo itens (Misturando IDs para forçar o balanceamento da árvore)
+        arvore.insert(new ItemRPG(50, "Espada Longa", "Comum"));
+        arvore.insert(new ItemRPG(25, "Adaga Velha", "Comum"));
+        arvore.insert(new ItemRPG(75, "Cajado Arcano", "Raro"));
+        arvore.insert(new ItemRPG(10, "Poção Cura", "Consumível"));
+        arvore.insert(new ItemRPG(30, "Escudo Torre", "Raro"));
+        arvore.insert(new ItemRPG(60, "Anel de Fogo", "Lendário")); // Teste visual Lendário
+        arvore.insert(new ItemRPG(85, "Botas Velozes", "Raro"));
+        arvore.insert(new ItemRPG(5, "Pedra Lixo", "Comum"));
+        arvore.insert(new ItemRPG(80, "Arco Élfico", "Lendário")); // Teste visual Lendário
+        
+        // Teste de Repetição
+        arvore.insert(new ItemRPG(50, "Espada Longa", "Comum")); // Vai aumentar qtd para 2
 
-        System.out.println("\n--- Estado da Árvore ---");
-        arvore.print();
-
-    
-    
+        // 2. Configurar a Janela (O "Frontend")
+        JFrame frame = new JFrame("Visualizador Árvore Rubro-Negra - Catálogo RPG");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1000, 600); // Largura x Altura da janela
+        
+        // 3. Adicionar nosso painel de desenho
+        VisualizadorArvore visualizador = new VisualizadorArvore(arvore);
+        frame.add(visualizador);
+        
+        // 4. Mostrar
+        frame.setVisible(true);
+        
+        System.out.println("Janela aberta! Verifique a visualização.");
     }
 }
