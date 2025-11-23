@@ -51,11 +51,11 @@ Certifique-se de ter o Java instalado (JDK 8 ou superior).
 
 1. Clonar o Repositório ou Baixar o Arquivo .ZIP
 git clone https://github.com/ffelipef/projetoGrafos1.git
-cd SEU-REPOSITORIO
+cd projetoGrafos1
 
 2. Acessar a Pasta do Código
 Abra o terminal e entre na pasta src onde estão os códigos fontes:
-cd projetoGrafos1\projetoGrafos1\projetoGrafos1\src
+cd projetoGrafos1\projetoGrafos1\src
 
 4. Compilar
 Compile todos os arquivos Java da pasta:
