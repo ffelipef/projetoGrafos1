@@ -16,9 +16,18 @@ public class App {
         arvore.insert(new ItemRPG(85, "Botas Velozes", "Raro"));
         arvore.insert(new ItemRPG(5, "Pedra Lixo", "Comum"));
         arvore.insert(new ItemRPG(80, "Arco Élfico", "Lendário")); // Teste visual Lendário
-        
+        arvore.insert(new ItemRPG(90, "Elmo de Ferro", "Comum"));
+        arvore.insert(new ItemRPG(15, "Capa Sombria", "Raro"));
+        arvore.insert(new ItemRPG(35, "Luvas de Couro", "Comum"));
+        arvore.insert(new ItemRPG(55, "Amuleto da Vida", "Lendário")); // Teste visual Lendário
+        arvore.insert(new ItemRPG(70, "Martelo de Guerra", "Raro"));
+        arvore.insert(new ItemRPG(95, "Cinto de Força", "Comum"));
         // Teste de Repetição
         arvore.insert(new ItemRPG(50, "Espada Longa", "Comum")); // Vai aumentar qtd para 2
+        arvore.insert(new ItemRPG(30, "Escudo Torre", "Raro"));
+        arvore.insert(new ItemRPG(30, "Escudo Torre", "Raro"));
+        arvore.insert(new ItemRPG(30, "Escudo Torre", "Raro"));
+         // Vai aumentar qtd para 2
 
         // 2. Configurar a Janela (O "Frontend")
         JFrame frame = new JFrame("Visualizador Árvore Rubro-Negra - Catálogo RPG");
