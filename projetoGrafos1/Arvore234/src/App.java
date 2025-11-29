@@ -55,8 +55,6 @@ public class App extends JFrame {
                     painelDesenho.repaint();
                     campoValor.setText("");
                     campoValor.requestFocus();
-                    JOptionPane.showMessageDialog(this, 
-                        "APOSTA ACEITA:\nA ficha $" + valor + " foi inserida na mesa!");
                 } else {
                     JOptionPane.showMessageDialog(this, 
                         "APOSTA REJEITADA:\nA ficha $" + valor + " já está na mesa!", 
