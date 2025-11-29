@@ -42,5 +42,12 @@ public class App {
         frame.setVisible(true);
         
         System.out.println("Janela aberta! Verifique a visualização.");
+
+        System.out.println("\n--- Teste de Remoção ---");
+        arvore.delete(50);
+        arvore.delete(5);
+        arvore.delete(25);
+
+        frame.repaint();
     }
 }
