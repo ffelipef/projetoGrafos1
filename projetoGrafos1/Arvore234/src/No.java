@@ -51,15 +51,12 @@ public class No {
         return temp;
     }
 
-    // --- NOVOS MÉTODOS PARA SUPORTAR REMOÇÃO ---
-    
-    // Remove um item em uma posição específica e ajusta o array
     public long removerItemNaPosicao(int index) {
         long temp = itens[index];
         for (int i = index; i < totalItens - 1; i++) {
             itens[i] = itens[i + 1];
         }
-        itens[totalItens - 1] = 0; // Limpa o último
+        itens[totalItens - 1] = 0;
         totalItens--;
         return temp;
     }

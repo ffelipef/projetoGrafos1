@@ -10,7 +10,7 @@ public class App extends JFrame {
     private JTextField campoValor = new JTextField(10);
 
     public App() {
-        setTitle("ROYAL CASSINO 2-3-4 - ALGORITMO 'THE BANKER'");
+        setTitle("ROYAL CASSINO 2-3-4 - ALGORITMO DO BANQUEIRO");
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -49,10 +49,21 @@ public class App extends JFrame {
         btnInserir.addActionListener(e -> {
             try {
                 long valor = Long.parseLong(campoValor.getText());
-                arvore.inserir(valor);
-                painelDesenho.repaint();
-                campoValor.setText("");
-                campoValor.requestFocus();
+                boolean inseriuComSucesso = arvore.inserir(valor);
+                
+                if (inseriuComSucesso) {
+                    painelDesenho.repaint();
+                    campoValor.setText("");
+                    campoValor.requestFocus();
+                    JOptionPane.showMessageDialog(this, 
+                        "APOSTA ACEITA:\nA ficha $" + valor + " foi inserida na mesa!");
+                } else {
+                    JOptionPane.showMessageDialog(this, 
+                        "APOSTA REJEITADA:\nA ficha $" + valor + " já está na mesa!", 
+                        "Erro de Duplicidade", 
+                        JOptionPane.WARNING_MESSAGE);
+                }
+                
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Aposta Inválida! Digite um número.");
             }
@@ -78,10 +89,12 @@ public class App extends JFrame {
         btnRemover.addActionListener(e -> {
             try {
                 long valor = Long.parseLong(campoValor.getText());
-                arvore.deletar(valor); // Chama o novo método complexo
+                arvore.deletar(valor);
                 painelDesenho.repaint();
                 campoValor.setText("");
                 campoValor.requestFocus();
+                    JOptionPane.showMessageDialog(this, "APOSTA REMOVIDA:\nA ficha $" + valor + " foi removida da mesa!");
+
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Valor Inválido!");
             }
@@ -135,7 +148,6 @@ class PainelCasino extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Fundo e Decoração
         g2d.setColor(new Color(218, 165, 32));
         g2d.setStroke(new BasicStroke(5));
         g2d.drawRect(5, 5, getWidth()-10, getHeight()-10);
