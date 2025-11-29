@@ -10,43 +10,32 @@ public class No {
         pai = null;
     }
 
-    public boolean ehFolha() {
-        return filhos[0] == null;
-    }
+    public boolean ehFolha() { return filhos[0] == null; }
+    public boolean estaCheio() { return totalItens == 3; }
 
-    public boolean estaCheio() {
-        return totalItens == 3;
-    }
-
-    //conecta um filho a um nó e configura o ponteiro do pai
     public void conectarFilho(int indiceFilho, No filho) {
         filhos[indiceFilho] = filho;
-        if (filho != null) {
-            filho.pai = this;
-        }
+        if (filho != null) filho.pai = this;
     }
 
-    // rremove e retorna o último ITEM
-    public long removerItem() {
-        long temp = itens[totalItens - 1];
-        itens[totalItens - 1] = 0;
-        totalItens--;
-        return temp;
-    }
-    
-    // revome e retorna o último FILHO
     public No desconectarFilho(int indiceFilho) {
         No temp = filhos[indiceFilho];
         filhos[indiceFilho] = null;
         return temp;
     }
 
+    public int encontrarItem(long chave) {
+        for(int i=0; i<totalItens; i++) {
+            if(itens[i] == chave) return i;
+        }
+        return -1;
+    }
+
     public int inserirItem(long valor) {
         totalItens++;
         for (int i = totalItens - 1; i > 0; i--) {
-            if (itens[i - 1] > valor) {
-                itens[i] = itens[i - 1]; // deslocamento p direita
-            } else {
+            if (itens[i - 1] > valor) itens[i] = itens[i - 1];
+            else {
                 itens[i] = valor;
                 return i;
             }
@@ -55,10 +44,23 @@ public class No {
         return 0;
     }
 
-    public int encontrarItem(long chave) {
-        for(int i=0; i<totalItens; i++) {
-            if(itens[i] == chave) return i;
+    public long removerItem() { // Remove o último
+        long temp = itens[totalItens - 1];
+        itens[totalItens - 1] = 0;
+        totalItens--;
+        return temp;
+    }
+
+    // --- NOVOS MÉTODOS PARA SUPORTAR REMOÇÃO ---
+    
+    // Remove um item em uma posição específica e ajusta o array
+    public long removerItemNaPosicao(int index) {
+        long temp = itens[index];
+        for (int i = index; i < totalItens - 1; i++) {
+            itens[i] = itens[i + 1];
         }
-        return -1;
+        itens[totalItens - 1] = 0; // Limpa o último
+        totalItens--;
+        return temp;
     }
 }

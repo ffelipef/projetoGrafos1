@@ -33,6 +33,7 @@ public class App extends JFrame {
         JButton btnInserir = criarBotaoCasino("APOSTAR (INSERIR)", new Color(0, 100, 0));
         JButton btnBuscar = criarBotaoCasino("AUDITORIA (BUSCAR)", new Color(0, 50, 150));
         JButton btnDemo = criarBotaoCasino("HIGH ROLLER (DEMO)", new Color(180, 0, 0));
+        JButton btnRemover = criarBotaoCasino("SACAR (REMOVER)", new Color(139, 0, 0));
 
         painelControles.add(lblValor);
         painelControles.add(campoValor);
@@ -40,6 +41,7 @@ public class App extends JFrame {
         painelControles.add(btnInserir);
         painelControles.add(btnBuscar);
         painelControles.add(btnDemo);
+        painelControles.add(btnRemover);
         
         add(painelControles, BorderLayout.NORTH);
         add(painelDesenho, BorderLayout.CENTER);
@@ -71,6 +73,18 @@ public class App extends JFrame {
             int[] dados = {50, 20, 70, 10, 30, 60, 80, 5, 15, 25, 35, 55, 65, 75, 85, 90, 95, 3, 7, 12, 18, 22, 28, 32, 38};
             for(int v : dados) arvore.inserir(v);
             painelDesenho.repaint();
+        });
+
+        btnRemover.addActionListener(e -> {
+            try {
+                long valor = Long.parseLong(campoValor.getText());
+                arvore.deletar(valor); // Chama o novo método complexo
+                painelDesenho.repaint();
+                campoValor.setText("");
+                campoValor.requestFocus();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Valor Inválido!");
+            }
         });
     }
 
