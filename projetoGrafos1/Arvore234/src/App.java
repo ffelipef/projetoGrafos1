@@ -1,25 +1,42 @@
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 
 public class App extends JFrame {
+    
     private Arvore234 arvore = new Arvore234();
-    private PainelArvore painelDesenho = new PainelArvore(arvore);
+    private PainelCasino painelDesenho = new PainelCasino(arvore);
     private JTextField campoValor = new JTextField(10);
 
     public App() {
-        setTitle("Árvore 2-3-4 (Visualização)");
-        setSize(1000, 700);
+        setTitle("ROYAL CASSINO 2-3-4 - ALGORITMO 'THE BANKER'");
+        setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // menu superior
         JPanel painelControles = new JPanel();
-        JButton btnInserir = new JButton("Inserir");
-        JButton btnBuscar = new JButton("Buscar");
-        JButton btnDemo = new JButton("Carregar Demo (25 nós)");
+        painelControles.setBackground(new Color(20, 0, 0));
+        painelControles.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, new Color(218, 165, 32))); // Borda Dourada
 
-        painelControles.add(new JLabel("Valor:"));
+        JLabel lblValor = new JLabel("VALOR DA FICHA ($):");
+        lblValor.setForeground(new Color(255, 215, 0)); // Dourado
+        lblValor.setFont(new Font("Serif", Font.BOLD, 16));
+
+        campoValor.setBackground(new Color(50, 0, 0));
+        campoValor.setForeground(Color.WHITE);
+        campoValor.setFont(new Font("Monospaced", Font.BOLD, 16));
+        campoValor.setCaretColor(Color.YELLOW);
+        campoValor.setBorder(new LineBorder(new Color(218, 165, 32), 2));
+
+        //menu
+        JButton btnInserir = criarBotaoCasino("APOSTAR (INSERIR)", new Color(0, 100, 0));
+        JButton btnBuscar = criarBotaoCasino("AUDITORIA (BUSCAR)", new Color(0, 50, 150));
+        JButton btnDemo = criarBotaoCasino("HIGH ROLLER (DEMO)", new Color(180, 0, 0));
+
+        painelControles.add(lblValor);
         painelControles.add(campoValor);
+        painelControles.add(Box.createHorizontalStrut(15));
         painelControles.add(btnInserir);
         painelControles.add(btnBuscar);
         painelControles.add(btnDemo);
@@ -27,7 +44,6 @@ public class App extends JFrame {
         add(painelControles, BorderLayout.NORTH);
         add(painelDesenho, BorderLayout.CENTER);
 
-        //acao dos botoes
         btnInserir.addActionListener(e -> {
             try {
                 long valor = Long.parseLong(campoValor.getText());
@@ -36,7 +52,7 @@ public class App extends JFrame {
                 campoValor.setText("");
                 campoValor.requestFocus();
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Digite um número válido!");
+                JOptionPane.showMessageDialog(this, "Aposta Inválida! Digite um número.");
             }
         });
 
@@ -44,10 +60,10 @@ public class App extends JFrame {
             try {
                 long valor = Long.parseLong(campoValor.getText());
                 int res = arvore.buscar(valor);
-                if(res != -1) JOptionPane.showMessageDialog(this, "Valor " + res + " encontrado!");
-                else JOptionPane.showMessageDialog(this, "Valor NÃO encontrado.");
+                if(res != -1) JOptionPane.showMessageDialog(this, "Ficha $" + res + " encontrada na mesa!");
+                else JOptionPane.showMessageDialog(this, "Ficha não encontrada no cassino.");
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Digite um número válido!");
+                JOptionPane.showMessageDialog(this, "Valor Inválido!");
             }
         });
         
@@ -58,21 +74,45 @@ public class App extends JFrame {
         });
     }
 
+    private JButton criarBotaoCasino(String texto, Color corFundo) {
+        JButton btn = new JButton(texto);
+        btn.setBackground(corFundo);
+        btn.setForeground(Color.WHITE);
+        btn.setFont(new Font("Serif", Font.BOLD, 14));
+        btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(new Color(218, 165, 32), 2), 
+            BorderFactory.createEmptyBorder(8, 15, 8, 15)
+        ));
+        return btn;
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new App().setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new App().setVisible(true));
     }
 }
 
-class PainelArvore extends JPanel {
+class PainelCasino extends JPanel {
     private Arvore234 arvore;
-    private int raioNo = 20; 
-    private int distV = 80; // distqncia vertical entre níveis
+    private int diametroFicha = 30;
+    private int distV = 90;
 
-    public PainelArvore(Arvore234 arvore) {
+    public PainelCasino(Arvore234 arvore) {
         this.arvore = arvore;
-        this.setBackground(Color.WHITE);
+        this.setBackground(new Color(34, 100, 34)); 
+    }
+
+    private int calcularPeso(No no) {
+        if (no == null) return 0;
+        if (no.ehFolha()) return 1;
+        
+        int pesoTotal = 0;
+        for (int i = 0; i < 4; i++) {
+            if (no.filhos[i] != null) {
+                pesoTotal += calcularPeso(no.filhos[i]);
+            }
+        }
+        return pesoTotal;
     }
 
     @Override
@@ -81,59 +121,87 @@ class PainelArvore extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        // Fundo e Decoração
+        g2d.setColor(new Color(218, 165, 32));
+        g2d.setStroke(new BasicStroke(5));
+        g2d.drawRect(5, 5, getWidth()-10, getHeight()-10);
+        
+        g2d.setColor(new Color(0, 50, 0));
+        g2d.setFont(new Font("Serif", Font.BOLD, 100));
+        String logo = "♠ ♥ ♣ ♦";
+        FontMetrics fm = g2d.getFontMetrics();
+        g2d.drawString(logo, getWidth()/2 - fm.stringWidth(logo)/2, getHeight()/2);
+
         if (arvore.getRaiz() != null) {
-            // centrealiza a raiz (horizontal)
-            desenharNo(g2d, arvore.getRaiz(), getWidth() / 2, 30, getWidth() / 4);
+            int pesoTotal = calcularPeso(arvore.getRaiz());
+            int larguraDisponivel = getWidth() - 100;
+            desenharMesaRecursivo(g2d, arvore.getRaiz(), 50, 50, larguraDisponivel, pesoTotal);
         }
     }
 
-    private void desenharNo(Graphics2D g, No no, int x, int y, int xOffset) {
-        // largura = (qtd de itens * tamanho do item) + margem extra
-        int larguraNo = (no.totalItens * raioNo) + 20;
+    private void desenharMesaRecursivo(Graphics2D g, No no, int xInicial, int y, int larguraFaixa, int pesoDesteNo) {
+        int xCentro = xInicial + (larguraFaixa / 2);
+        int espacoEntreFichas = 4; 
+        int larguraMesa = (no.totalItens * diametroFicha) + ((no.totalItens - 1) * espacoEntreFichas) + 24;
+        int alturaMesa = diametroFicha + 16;
 
-        g.setColor(new Color(200, 230, 255));
+        g.setColor(new Color(101, 67, 33));
+        g.fillRoundRect(xCentro - larguraMesa/2, y, larguraMesa, alturaMesa, 20, 20);
 
-        g.fillRoundRect(x - larguraNo/2, y, larguraNo, raioNo, 10, 10);
-
-
-        g.setColor(Color.BLACK);
-        g.drawRoundRect(x - larguraNo/2, y, larguraNo, raioNo, 10, 10);
-
-        FontMetrics fm = g.getFontMetrics();
-        int alturaTexto = fm.getAscent();
+        if (no.estaCheio()) {
+            g.setColor(Color.RED);
+            g.setStroke(new BasicStroke(3));
+        } else {
+            g.setColor(new Color(218, 165, 32));
+            g.setStroke(new BasicStroke(2));
+        }
+        g.drawRoundRect(xCentro - larguraMesa/2, y, larguraMesa, alturaMesa, 20, 20);
 
         for (int i = 0; i < no.totalItens; i++) {
-            String valorStr = String.valueOf(no.itens[i]);
+            long valor = no.itens[i];
+            int inicioFichasX = xCentro - (larguraMesa / 2) + 12;
+            int fichaX = inicioFichasX + (i * (diametroFicha + espacoEntreFichas));
+            int fichaY = y + 8;
+            
+            Color corFicha = (valor % 2 == 0) ? Color.BLACK : new Color(180, 0, 0);
+            Color corBorda = (valor % 2 == 0) ? Color.RED : Color.BLACK;
+            
+            Ellipse2D formaFicha = new Ellipse2D.Double(fichaX, fichaY, diametroFicha, diametroFicha);
+            g.setColor(corFicha);
+            g.fill(formaFicha);
+            
+            g.setStroke(new BasicStroke(2));
+            g.setColor(corBorda);
+            g.draw(formaFicha);
 
-            // calculo da posição x do texto baseada no raioNo
-            int centroItemX = (x - larguraNo/2) + 10 + (i * raioNo) + (raioNo / 2);
-            int textoX = centroItemX - (fm.stringWidth(valorStr) / 2);
+            g.setColor(Color.WHITE);
+            Stroke oldStroke = g.getStroke();
+            g.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{3}, 0));
+            g.draw(new Ellipse2D.Double(fichaX + 3, fichaY + 3, diametroFicha - 6, diametroFicha - 6));
+            g.setStroke(oldStroke);
 
-            // cálculo da posição y centralizada
-            int textoY = y + (raioNo / 2) + (alturaTexto / 2) - 2;
-
-            g.drawString(valorStr, textoX, textoY);
-
-            if(i < no.totalItens - 1) {
-                int divX = (x - larguraNo/2) + 10 + ((i+1) * raioNo);
-                g.drawLine(divX, y, divX, y + raioNo);
-            }
+            g.setFont(new Font("Arial", Font.BOLD, diametroFicha / 2)); 
+            FontMetrics fm = g.getFontMetrics();
+            String txt = String.valueOf(valor);
+            g.drawString(txt, fichaX + (diametroFicha/2) - (fm.stringWidth(txt)/2), fichaY + (diametroFicha/2) + (diametroFicha/6));
         }
 
-        //desenho das conexões e dos filhos recursivamente
         if (!no.ehFolha()) {
-            for (int i = 0; i <= no.totalItens; i++) {
+            int cursorX = xInicial;
+            
+            for (int i = 0; i < 4; i++) {
                 if (no.filhos[i] != null) {
-                    int novoX = x - (xOffset * (no.totalItens - 1)) + (i * xOffset * 2);
-                    
-                    if (no.totalItens == 1) novoX = (i == 0) ? x - xOffset : x + xOffset;
-                    if (no.totalItens == 2) novoX = x - xOffset + (i * xOffset); 
-                    
+                    int pesoFilho = calcularPeso(no.filhos[i]);
+                    int larguraParaFilho = (larguraFaixa * pesoFilho) / Math.max(pesoDesteNo, 1);
                     int novoY = y + distV;
+                    int xCentroFilho = cursorX + (larguraParaFilho / 2);
 
-                    g.drawLine(x, y + raioNo, novoX, novoY);
+                    g.setColor(new Color(255, 215, 0, 100));
+                    g.setStroke(new BasicStroke(2));
+                    g.drawLine(xCentro, y + alturaMesa, xCentroFilho, novoY);
                     
-                    desenharNo(g, no.filhos[i], novoX, novoY, xOffset / (no.totalItens + 1)); 
+                    desenharMesaRecursivo(g, no.filhos[i], cursorX, novoY, larguraParaFilho, pesoFilho);
+                    cursorX += larguraParaFilho;
                 }
             }
         }
