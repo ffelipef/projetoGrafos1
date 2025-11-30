@@ -64,11 +64,11 @@ aperte f5 ou clique no botao 'Run Java'
 
 Nota: Uma janela será aberta exibindo a árvore gerada com os dados de teste inseridos no código.
 
-3.Acessar a Pasta do Código de Árvore 2-3-4
+3. Acessar a Pasta do Código de Árvore 2-3-4
 Abra o vscode e entre na pasta src onde estão os códigos fontes:
 projetoGrafos1\Arvore234\src
 
-2.2. Executar
+3.2. Executar
 Rode o arquivo principal (App):
 aperte f5 ou clique no botao 'Run Java'
 
